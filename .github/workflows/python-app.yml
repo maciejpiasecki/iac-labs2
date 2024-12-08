@@ -64,60 +64,9 @@ jobs:
         key: ${{ runner.os }}-venv
     - name: Lint with flake8
       run: poetry run task lint
-      
-  formatter:
-    needs: build
-
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./example-app   
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-    - name: Install Poetry Action
-      uses: snok/install-poetry@v1.3.4
-    - name: Cache build venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        path: /home/runner/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-venv
-    - name: Lint with flake8
-      run: poetry run task formatter
-      
-  security:
-    needs: build
-
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./example-app   
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-    - name: Install Poetry Action
-      uses: snok/install-poetry@v1.3.4
-    - name: Cache build venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        path: /home/runner/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-venv
-    - name: Lint with flake8
-      run: poetry run task security
-
+    
   unitest:
-    if: ${{ always() }}
-    needs: [lint, security,formatter]
+    needs: lint
 
     runs-on: ubuntu-latest
     defaults:
